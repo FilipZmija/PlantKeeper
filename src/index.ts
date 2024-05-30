@@ -5,6 +5,7 @@ import { sequelize } from "./database/init.js";
 import cors from "cors";
 import user from "./routes/user.js";
 import { ServerSocket } from "./sockets/socket.js";
+import { proceedPlantDataCollecting } from "./outsource/data.js";
 
 dotenv.config();
 const app = express();
@@ -20,13 +21,10 @@ app.use(
 app.use(express.json({ limit: "100mb" }));
 app.use("/user", user);
 
-(async () => {
-  try {
-    await sequelize.sync();
-    server.listen(process.env.PORT, () =>
-      console.log(`Listening on port ${process.env.PORT}`)
-    );
-  } catch (error) {
-    console.error("Error starting server:", error);
-  }
-})();
+const sequelizes = await sequelize();
+await sequelizes.sync();
+await proceedPlantDataCollecting();
+
+server.listen(process.env.PORT, () =>
+  console.log(`Listening on port ${process.env.PORT}`)
+);
