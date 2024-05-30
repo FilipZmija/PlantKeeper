@@ -11,7 +11,9 @@ import {
   PrimaryKey,
   AutoIncrement,
   NotNull,
+  HasMany,
 } from "@sequelize/core/decorators-legacy";
+import { OwnedPlant } from "./OwnedPlant.model.js";
 
 export class User extends Model<
   InferAttributes<User>,
@@ -29,4 +31,7 @@ export class User extends Model<
   @Attribute(DataTypes.STRING)
   @NotNull
   declare password: string;
+
+  @HasMany(() => OwnedPlant, "userId")
+  declare ownedPlants?: NonAttribute<OwnedPlant[]>;
 }
