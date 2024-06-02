@@ -24,12 +24,11 @@ export class Plant extends Model<
 
   @Attribute(DataTypes.STRING)
   @NotNull
-  @Unique
-  declare apiId: string;
+  declare name: string;
 
   @Attribute(DataTypes.STRING)
-  @NotNull
-  declare name: string;
+  @Unique
+  declare apiId?: string;
 
   @Attribute(DataTypes.STRING)
   declare commonName?: string;

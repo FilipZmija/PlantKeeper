@@ -58,3 +58,49 @@ export const isIPlantApiData = (
 ): item is IPlantApiData => {
   return item !== false;
 };
+
+export interface IIdentifiedPlant {
+  score: number;
+  species: {
+    scientificNameWithoutAuthor: string;
+    scientificNameAuthorship: string;
+    scientificName: string;
+    genus: {
+      scientificNameWithoutAuthor: string;
+      scientificNameAuthorship: string;
+      scientificName: string;
+    };
+    family: {
+      scientificNameWithoutAuthor: string;
+      scientificNameAuthorship: string;
+      scientificName: string;
+    };
+    commonNames: string[];
+  };
+  gbif: {
+    id: 0;
+  };
+  powo: {
+    id: string;
+  };
+  iucn: {
+    id: string;
+    category: string;
+  };
+}
+export interface IIdentificationPlantApiData {
+  query: {
+    project: string;
+    images: string[];
+    organs: string[];
+    includeRelatedImages: boolean;
+    noReject: boolean;
+  };
+  language: string;
+  preferedReferential: string;
+  switchToProject: string;
+  bestMatch: string;
+  results: IIdentifiedPlant[];
+  remainingIdentificationRequests: number;
+  version: string;
+}
