@@ -2,16 +2,16 @@ import axios, { AxiosResponse } from "axios";
 import { ILitePlantApiData, IPlantApiData, isIPlantApiData } from "./types.js";
 import { delay } from "./helpers.js";
 import { Plant } from "../database/models/Plant.model.js";
-import { Op } from "@sequelize/core";
+import { isPlantInDatabase } from "../database/models/modelFunctions/plant.functions.js";
 const headers = {
-  "x-rapidapi-key": process.env.API_KEY,
-  "x-rapidapi-host": process.env.API_HOST,
+  "x-rapidapi-key": process.env.PLANT_API_HOSTAPI_KEY,
+  "x-rapidapi-host": process.env.PLANT_API_HOST,
 };
 
 export const fetchLiteAllPlants = async (): Promise<ILitePlantApiData[]> => {
   try {
     const response: AxiosResponse<ILitePlantApiData[]> = await axios.get(
-      `${process.env.API_URL}/all-lite`,
+      `${process.env.PLANT_API_URL}/all-lite`,
       {
         headers,
       }
@@ -25,14 +25,10 @@ export const fetchLiteAllPlants = async (): Promise<ILitePlantApiData[]> => {
 
 export const getSinglePlant = async (id: string, name: string) => {
   try {
-    const existingPlant = await Plant.findOne({
-      where: {
-        [Op.or]: [{ apiId: id }, { name: name }],
-      },
-    });
+    const existingPlant = await isPlantInDatabase(id, name);
     if (existingPlant) return false;
     const response: AxiosResponse<IPlantApiData> = await axios.get(
-      `${process.env.API_URL}/id/${id}`,
+      `${process.env.PLANT_API_URL}/id/${id}`,
       {
         headers,
       }
