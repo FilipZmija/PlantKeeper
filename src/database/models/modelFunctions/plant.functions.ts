@@ -17,6 +17,21 @@ export const getPlantsBySubstringName = async (name: string) => {
   }
 };
 
+export const getPlantsBySubstringCommonName = async (name: string) => {
+  try {
+    const plant = await Plant.findOne({
+      where: where(fn("LOWER", col("commonName")), {
+        [Op.like]: `%${name.toLowerCase()}%`,
+      }),
+    });
+    if (plant) return [plant];
+    else return [];
+  } catch (e: any) {
+    console.log(e);
+    return [];
+  }
+};
+
 export const isPlantInDatabase = async (id: string, name: string) => {
   try {
     const existingPlant = await Plant.findOne({
