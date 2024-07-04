@@ -81,7 +81,7 @@ export const uploadToDatabase = async (plantApiData: IPlantApiData[]) => {
       const {
         id: apiId,
         "Latin name": name,
-        Avaibility: avaibility,
+        Avaibility: availability,
         "Light tolered": lightTolerated,
         "Light ideal": lightIdeal,
         "Temperature min": temperatureMin,
@@ -95,7 +95,7 @@ export const uploadToDatabase = async (plantApiData: IPlantApiData[]) => {
         apiId,
         name,
         commonName: commonName?.join(", "),
-        avaibility,
+        availability,
         lightTolerated,
         lightIdeal,
         temperatureMin: temperatureMin?.C,
