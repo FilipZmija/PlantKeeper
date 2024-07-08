@@ -104,3 +104,15 @@ export interface IIdentificationPlantApiData {
   remainingIdentificationRequests: number;
   version: string;
 }
+
+export interface IPlant {
+  name: string;
+  commonName: string;
+  availability: string;
+  lightTolerated: string;
+  lightIdeal: string;
+  temperatureMax: number;
+  temperatureMin: number;
+  watering: string;
+  climat: string;
+}
