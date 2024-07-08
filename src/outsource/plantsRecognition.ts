@@ -1,5 +1,9 @@
 import axios, { AxiosResponse } from "axios";
-import { IIdentificationPlantApiData, IIdentifiedPlant } from "./types.js";
+import {
+  IIdentificationPlantApiData,
+  IIdentifiedPlant,
+  IPlant,
+} from "./types.js";
 import { Plant } from "../database/models/Plant.model.js";
 export const indentifyPlant = async (image: Blob) => {
   const formData = new FormData();
@@ -12,6 +16,7 @@ export const indentifyPlant = async (image: Blob) => {
         formData
       );
     console.log(performance.now() - now);
+    console.log(response.data.results[0]);
     return response.data;
   } catch (e: any) {
     console.log(e);
@@ -24,6 +29,21 @@ export const addIdentifiedPlantToDatabase = async (
 ) => {
   const name = identifiedPlant.species.scientificNameWithoutAuthor;
   const commonName = identifiedPlant.species.commonNames.join(", ");
-  const plant = await Plant.create({ name, commonName });
-  return plant;
+  try {
+    const plant = await Plant.create({ name, commonName });
+    return plant;
+  } catch (e) {
+    throw e;
+  }
+};
+
+export const addOpenAIIdentifiedPlantToDatabase = async (
+  identifiedPlant: IPlant
+) => {
+  try {
+    const plant = await Plant.create(identifiedPlant);
+    return plant;
+  } catch (e) {
+    throw e;
+  }
 };

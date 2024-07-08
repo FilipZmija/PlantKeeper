@@ -34,7 +34,7 @@ export class Plant extends Model<
   declare commonName?: string;
 
   @Attribute(DataTypes.STRING)
-  declare avaibility?: string;
+  declare availability?: string;
 
   @Attribute(DataTypes.STRING)
   declare lightTolerated?: string;
