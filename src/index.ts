@@ -7,10 +7,6 @@ import user from "./routes/user.js";
 import plant from "./routes/plants.js";
 import ownedplant from "./routes/ownedPlants.js";
 import { ServerSocket } from "./sockets/socket.js";
-import { proceedPlantDataCollecting } from "./outsource/data.js";
-import { indentifyPlant } from "./outsource/plantsRecognition.js";
-import { getFileName } from "./outsource/helpers.js";
-import { uploadBlob } from "./outsource/azureBlobStorage.js";
 
 dotenv.config();
 const app = express();

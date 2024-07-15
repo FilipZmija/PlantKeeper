@@ -4,8 +4,8 @@ import { Response, NextFunction, Request } from "express";
 import { CustomSocket } from "../types/local/socketIo.js";
 
 export const createToken = (user: User): string => {
-  const { username, id } = user;
-  const accessToken = jwt.sign({ username, id }, process.env.SECRET_TOKEN);
+  const { name, id } = user;
+  const accessToken = jwt.sign({ name, id }, process.env.SECRET_TOKEN);
   return accessToken;
 };
 
@@ -23,7 +23,6 @@ export const validateTokenApi = (
   try {
     jwt.verify(accessToken, process.env.SECRET_TOKEN, (err, decoded) => {
       if (err) {
-        next(new Error("Invalid token"));
         res.status(401).json({ message: "Invalid token!" });
         return;
       }

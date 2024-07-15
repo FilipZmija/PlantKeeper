@@ -17,17 +17,8 @@ router.use((req, res, next) => {
 });
 
 router.post("/add", async (req, res) => {
-  const {
-    name,
-    filename,
-    id: plantId,
-    lastWatered,
-    lastTransplanted,
-    desiredMoisture,
-    wateringType,
-  } = req.body;
+  const { name, filename, id: plantId } = req.body;
   const userId = 1;
-  console.log(!filename, !plantId);
   if (!filename || !plantId) res.status(400).json({ message: "Bad request" });
   try {
     const imageUrl = await uploadBlob(uploadsDir + filename);
@@ -35,10 +26,10 @@ router.post("/add", async (req, res) => {
       name,
       plantId,
       image: imageUrl,
-      lastWatered,
-      lastTransplanted,
-      desiredMoisture,
-      wateringType,
+      lastWatered: undefined,
+      lastTransplanted: undefined,
+      desiredMoisture: undefined,
+      wateringType: "off",
       userId,
     });
     const plant = await OwnedPlant.findByPk(id, { include: Plant });
