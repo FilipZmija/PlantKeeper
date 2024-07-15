@@ -14,6 +14,8 @@ declare global {
       PLANT_INDENTIFICATION_API_URL: string;
       PLANT_INDENTIFICATION_API_KEY: string;
       AZURE_STORAGE_CONNECTION_STRING: string;
+      CRYPTO_SECRET: string;
+      CRYPTO_IV: string;
     }
   }
 }

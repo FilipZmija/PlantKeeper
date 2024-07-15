@@ -4,8 +4,8 @@ const openai = new OpenAi({
 });
 
 const plantInfo = {
-  name: "Monstera deliciosa",
-  commonName: "Splitleaf Philodendron, Mexican Breadfruit",
+  name: "Name",
+  commonName: "Common name",
   availability: "Regular",
   lightTolerated: "Diffuse light ( Less than X lux / X fc)",
   lightIdeal: "Strong light ( X to X lux/X to X fc)",
@@ -15,10 +15,19 @@ const plantInfo = {
   climat: "Tropical",
 };
 
+const responseToJson = (response: string) =>
+  response.replace("```json\n", "").replace("\n```", "");
+
 export const getPlantInfoPrompt = (name: string) =>
-  "Can you proivide me with information about " +
+  "Provide information about " +
   name +
   " in the same style as this" +
+  JSON.stringify(plantInfo) +
+  "?" +
+  "Only return json";
+
+export const identifyPlantPrompt = () =>
+  "Can you identify this plant and proivide me with information about this plant in the same style as this" +
   JSON.stringify(plantInfo) +
   "?" +
   "Make sure to return only json object such as provided one";
@@ -29,8 +38,35 @@ export const questionOpenAI = async (prompt: string) => {
     messages: [{ role: "user", content: prompt }],
   });
   const message = response.choices[0].message.content;
-  if (message) {
-    const jsonString = message.replace("```json\n", "").replace("\n```", "");
-    return JSON.parse(jsonString);
-  } else return null;
+  if (!message) return null;
+  return JSON.parse(responseToJson(message));
+};
+export const indentifyPlantOpenAI = async (image: string) => {
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        {
+          role: "user",
+          content: [
+            { type: "text", text: identifyPlantPrompt() },
+            {
+              type: "image_url",
+              image_url: {
+                url: `data:image/jpeg;base64,${image}`,
+              },
+            },
+          ],
+        },
+      ],
+      max_tokens: 300,
+    });
+
+    const message = response.choices[0].message.content;
+    console.log(response);
+    if (!message) return null;
+    return JSON.parse(responseToJson(message));
+  } catch (error) {
+    throw error;
+  }
 };
